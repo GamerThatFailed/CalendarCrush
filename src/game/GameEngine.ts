@@ -438,20 +438,20 @@ export class GameEngine {
   private loseLife(): void {
     this.gameStats.lives--;
     
+    // Clear all active power-ups before any other actions
+    const activePowerUpsCopy = [...this.activePowerUps];
+    activePowerUpsCopy.forEach(powerUpType => {
+      this.removePowerUp(powerUpType);
+    });
+    this.activePowerUps = [];
+    
+    // Reset paddle to default size
+    this.paddle.dimensions.width = 120;
+    
     if (this.gameStats.lives <= 0) {
       this.gameState = GameState.GAME_OVER;
       this.audio.playSound('game-over');
     } else {
-      // Clear all active power-ups before resetting ball
-      const activePowerUpsCopy = [...this.activePowerUps];
-      activePowerUpsCopy.forEach(powerUpType => {
-        this.removePowerUp(powerUpType);
-      });
-      this.activePowerUps = [];
-      
-      // Reset paddle to default size
-      this.paddle.dimensions.width = 120;
-      
       // Reset ball position
       this.ball.position = { 
         x: this.CANVAS_WIDTH / 2, 
