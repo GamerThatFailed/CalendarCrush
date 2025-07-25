@@ -196,11 +196,20 @@ export class GameEngine {
     const deltaTime = currentTime - this.lastTime;
     this.lastTime = currentTime;
 
+    // Log ball velocity at start of frame
+    const startSpeed = Math.sqrt(this.ball.velocity.x ** 2 + this.ball.velocity.y ** 2);
+    console.log(`Frame start - Ball velocity: x=${this.ball.velocity.x.toFixed(2)}, y=${this.ball.velocity.y.toFixed(2)}, magnitude=${startSpeed.toFixed(2)}`);
+
     if (this.gameState === GameState.PLAYING) {
       this.update(deltaTime);
     }
     
     this.render();
+    
+    // Log ball velocity at end of frame
+    const endSpeed = Math.sqrt(this.ball.velocity.x ** 2 + this.ball.velocity.y ** 2);
+    console.log(`Frame end - Ball velocity: x=${this.ball.velocity.x.toFixed(2)}, y=${this.ball.velocity.y.toFixed(2)}, magnitude=${endSpeed.toFixed(2)}`);
+    
     this.animationFrame = requestAnimationFrame(this.gameLoop);
   };
 
