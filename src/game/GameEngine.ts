@@ -37,11 +37,6 @@ export class GameEngine {
   private lastTime = 0;
   private animationFrame: number | null = null;
   
-  // FPS tracking
-  private frameCount: number = 0;
-  private lastFpsTime: number = 0;
-  private currentFps: number = 0;
-  
   private readonly PADDLE_SPEED = 8;
   private readonly BALL_SPEED_BASE = 6;
   private readonly CANVAS_WIDTH = 1000;
@@ -97,17 +92,10 @@ export class GameEngine {
         x: this.CANVAS_WIDTH / 2, 
         y: this.CANVAS_HEIGHT - 60 
       },
-      velocity: { 
-        x: this.currentLevel.ballSpeed * Math.cos(Math.PI / 4),
-        y: -this.currentLevel.ballSpeed * Math.sin(Math.PI / 4)
-      },
+      velocity: { x: 4, y: -this.currentLevel.ballSpeed },
       radius: 8,
       trail: []
     };
-
-    // Log initial ball speed for debugging
-    const initialSpeed = Math.sqrt(this.ball.velocity.x ** 2 + this.ball.velocity.y ** 2);
-    console.log(`Ball reset - Level ${this.currentLevel.id} speed: ${this.currentLevel.ballSpeed}, Actual velocity magnitude: ${initialSpeed.toFixed(2)}`);
 
     // Load meeting blocks from current level
     this.meetingBlocks = [...this.currentLevel.meetings];
@@ -187,7 +175,6 @@ export class GameEngine {
   }
 
   public start(): void {
-    this.stop();
     this.gameLoop(0);
   }
 
@@ -199,31 +186,14 @@ export class GameEngine {
   }
 
   private gameLoop = (currentTime: number): void => {
-    this.frameCount++;
     const deltaTime = currentTime - this.lastTime;
     this.lastTime = currentTime;
-    
-    // Calculate FPS every second
-    if (currentTime - this.lastFpsTime >= 1000) {
-      this.currentFps = this.frameCount / ((currentTime - this.lastFpsTime) / 1000);
-      this.frameCount = 0;
-      this.lastFpsTime = currentTime;
-    }
-
-    // Log ball velocity at start of frame
-    const startSpeed = Math.sqrt(this.ball.velocity.x ** 2 + this.ball.velocity.y ** 2);
-    console.log(`Frame start - Ball velocity: x=${this.ball.velocity.x.toFixed(2)}, y=${this.ball.velocity.y.toFixed(2)}, magnitude=${startSpeed.toFixed(2)}`);
 
     if (this.gameState === GameState.PLAYING) {
       this.update(deltaTime);
     }
     
     this.render();
-    
-    // Log ball velocity at end of frame
-    const endSpeed = Math.sqrt(this.ball.velocity.x ** 2 + this.ball.velocity.y ** 2);
-    console.log(`Frame end - Ball velocity: x=${this.ball.velocity.x.toFixed(2)}, y=${this.ball.velocity.y.toFixed(2)}, magnitude=${endSpeed.toFixed(2)}`);
-    
     this.animationFrame = requestAnimationFrame(this.gameLoop);
   };
 
@@ -262,21 +232,8 @@ export class GameEngine {
     this.ball.position.x += this.ball.velocity.x;
     this.ball.position.y += this.ball.velocity.y;
 
-    // Log ball speed before constraint
-    const speedBeforeConstraint = Math.sqrt(this.ball.velocity.x ** 2 + this.ball.velocity.y ** 2);
-    const maxSpeed = this.currentLevel.ballSpeed * 1.5;
-
     // Constrain ball velocity to prevent excessive speed
-    this.physics.constrainBallVelocity(this.ball, maxSpeed);
-
-    // Log ball speed after constraint
-    const speedAfterConstraint = Math.sqrt(this.ball.velocity.x ** 2 + this.ball.velocity.y ** 2);
-    
-    // Log every 60 frames to avoid spam, but include constraint details
-    if (Math.floor(this.lastTime / 1000) % 1 === 0 && Math.floor(this.lastTime) % 60 === 0) {
-      console.log(`Ball speed - Before constraint: ${speedBeforeConstraint.toFixed(2)}, After constraint: ${speedAfterConstraint.toFixed(2)}, Max allowed: ${maxSpeed.toFixed(2)}`);
-    }
-
+    this.physics.constrainBallVelocity(this.ball, this.currentLevel.ballSpeed * 1.5);
 
     // Wall collisions
     if (this.ball.position.x <= this.ball.radius || this.ball.position.x >= this.CANVAS_WIDTH - this.ball.radius) {
@@ -500,15 +457,7 @@ export class GameEngine {
         x: this.CANVAS_WIDTH / 2, 
         y: this.CANVAS_HEIGHT - 60 
       };
-      this.ball.velocity = { 
-        x: this.currentLevel.ballSpeed * Math.cos(Math.PI / 4),
-        y: -this.currentLevel.ballSpeed * Math.sin(Math.PI / 4)
-      };
-      
-      // Log ball speed after life lost reset
-      const resetSpeed = Math.sqrt(this.ball.velocity.x ** 2 + this.ball.velocity.y ** 2);
-      console.log(`Ball reset after life lost - Level ${this.currentLevel.id} speed: ${this.currentLevel.ballSpeed}, Actual velocity magnitude: ${resetSpeed.toFixed(2)}`);
-      
+      this.ball.velocity = { x: 4, y: -this.currentLevel.ballSpeed };
       this.audio.playSound('life-lost');
     }
   }
@@ -762,19 +711,6 @@ export class GameEngine {
     this.ctx.fillText(`Level: ${this.gameStats.level}`, 20, 50);
     this.ctx.fillText(`Lives: ${this.gameStats.lives}`, 150, 30);
     this.ctx.fillText(`Meetings: ${this.gameStats.meetingsCancelled}`, 150, 50);
-    
-    // FPS counter in top-right corner
-    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
-    this.ctx.fillRect(this.CANVAS_WIDTH - 120, 10, 110, 30);
-    
-    this.ctx.strokeStyle = '#e2e8f0';
-    this.ctx.lineWidth = 1;
-    this.ctx.strokeRect(this.CANVAS_WIDTH - 120, 10, 110, 30);
-    
-    this.ctx.fillStyle = '#1e293b';
-    this.ctx.font = 'bold 14px -apple-system, BlinkMacSystemFont, sans-serif';
-    this.ctx.textAlign = 'center';
-    this.ctx.fillText(`FPS: ${Math.round(this.currentFps)}`, this.CANVAS_WIDTH - 65, 28);
   }
 
   private renderGameStateOverlay(): void {

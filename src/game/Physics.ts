@@ -64,8 +64,6 @@ export class Physics {
 
   public constrainBallVelocity(ball: Ball, maxSpeed: number): void {
     const speed = Math.sqrt(ball.velocity.x ** 2 + ball.velocity.y ** 2);
-    console.log(`Physics constraint - Input speed: ${speed.toFixed(2)}, Max speed: ${maxSpeed.toFixed(2)}`);
-    
     if (speed > maxSpeed) {
       ball.velocity.x = (ball.velocity.x / speed) * maxSpeed;
       ball.velocity.y = (ball.velocity.y / speed) * maxSpeed;
