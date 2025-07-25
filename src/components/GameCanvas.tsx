@@ -13,7 +13,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ onGameStateChange }) => 
 
   useEffect(() => {
     if (canvasRef.current && !gameEngineRef.current) {
-      gameEngineRef.current = new GameEngine(canvasRef.current, true);
+      gameEngineRef.current = new GameEngine(canvasRef.current);
       setIsLoaded(true);
       
       // Start the game engine
@@ -40,20 +40,20 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ onGameStateChange }) => 
     <div className="relative">
       <canvas
         ref={canvasRef}
-        className="border-2 border-gray-200 dark:border-gray-700 rounded-lg shadow-lg cursor-pointer max-w-full h-auto"
+        className="border-2 border-gray-200 rounded-lg shadow-lg cursor-pointer max-w-full h-auto"
         style={{ 
-          aspectRatio: '1600/1120',
+          aspectRatio: '10/7',
           width: '100%',
-          maxWidth: '1600px'
+          maxWidth: '1000px'
         }}
         onClick={handleCanvasClick}
       />
       
       {!isLoaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-lg">
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-lg">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600 dark:text-gray-300">Loading Calendar Breaker...</p>
+            <p className="text-gray-600">Loading Calendar Breaker...</p>
           </div>
         </div>
       )}
