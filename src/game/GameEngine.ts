@@ -92,7 +92,7 @@ export class GameEngine {
         x: this.CANVAS_WIDTH / 2, 
         y: this.CANVAS_HEIGHT - 60 
       },
-      velocity: { x: 4, y: -this.BALL_SPEED_BASE },
+      velocity: { x: 4, y: -this.currentLevel.ballSpeed },
       radius: 8,
       trail: []
     };
@@ -227,6 +227,9 @@ export class GameEngine {
     // Update ball position
     this.ball.position.x += this.ball.velocity.x;
     this.ball.position.y += this.ball.velocity.y;
+
+    // Constrain ball velocity to prevent excessive speed
+    this.physics.constrainBallVelocity(this.ball, this.currentLevel.ballSpeed * 1.5);
 
     // Wall collisions
     if (this.ball.position.x <= this.ball.radius || this.ball.position.x >= this.CANVAS_WIDTH - this.ball.radius) {
@@ -440,7 +443,7 @@ export class GameEngine {
         x: this.CANVAS_WIDTH / 2, 
         y: this.CANVAS_HEIGHT - 60 
       };
-      this.ball.velocity = { x: 4, y: -this.BALL_SPEED_BASE };
+      this.ball.velocity = { x: 4, y: -this.currentLevel.ballSpeed };
       this.audio.playSound('life-lost');
     }
   }
