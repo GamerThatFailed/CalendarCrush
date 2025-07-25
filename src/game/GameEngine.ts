@@ -40,8 +40,8 @@ export class GameEngine {
   
   private readonly PADDLE_SPEED = 8;
   private readonly BALL_SPEED_BASE = 6;
-  private readonly CANVAS_WIDTH = 1600;
-  private readonly CANVAS_HEIGHT = 1120;
+  private readonly CANVAS_WIDTH = 2400;
+  private readonly CANVAS_HEIGHT = 1680;
 
   constructor(canvas: HTMLCanvasElement, isDarkMode: boolean = true) {
     this.canvas = canvas;
@@ -81,8 +81,8 @@ export class GameEngine {
     // Initialize paddle
     this.paddle = {
       position: { 
-        x: this.CANVAS_WIDTH / 2 - 60, 
-        y: this.CANVAS_HEIGHT - 40 
+        x: this.CANVAS_WIDTH / 2 - 60,
+        y: this.CANVAS_HEIGHT - 40
       },
       dimensions: { width: 120, height: 12 },
       velocity: 0
@@ -92,7 +92,7 @@ export class GameEngine {
     this.ball = {
       position: { 
         x: this.CANVAS_WIDTH / 2, 
-        y: this.CANVAS_HEIGHT - 60 
+        y: this.CANVAS_HEIGHT - 60
       },
       velocity: { x: 4, y: -this.currentLevel.ballSpeed },
       radius: 8,
