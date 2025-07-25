@@ -101,6 +101,10 @@ export class GameEngine {
     this.meetingBlocks = [...this.currentLevel.meetings];
     this.powerUps = [];
     this.activePowerUps = [];
+    
+    // Ensure paddle is reset to default size
+    this.paddle.dimensions.width = 120;
+    this.activePowerUps = [];
   }
 
   private setupEventListeners(): void {
@@ -438,6 +442,16 @@ export class GameEngine {
       this.gameState = GameState.GAME_OVER;
       this.audio.playSound('game-over');
     } else {
+      // Clear all active power-ups before resetting ball
+      const activePowerUpsCopy = [...this.activePowerUps];
+      activePowerUpsCopy.forEach(powerUpType => {
+        this.removePowerUp(powerUpType);
+      });
+      this.activePowerUps = [];
+      
+      // Reset paddle to default size
+      this.paddle.dimensions.width = 120;
+      
       // Reset ball position
       this.ball.position = { 
         x: this.CANVAS_WIDTH / 2, 
