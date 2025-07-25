@@ -40,8 +40,8 @@ export class GameEngine {
   
   private readonly PADDLE_SPEED = 8;
   private readonly BALL_SPEED_BASE = 6;
-  private readonly CANVAS_WIDTH = 2400;
-  private readonly CANVAS_HEIGHT = 1680;
+  private readonly CANVAS_WIDTH = 1600;
+  private readonly CANVAS_HEIGHT = 1120;
 
   constructor(canvas: HTMLCanvasElement, isDarkMode: boolean = true) {
     this.canvas = canvas;
