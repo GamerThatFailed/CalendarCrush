@@ -42,9 +42,9 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ onGameStateChange }) => 
         ref={canvasRef}
         className="border-2 border-gray-200 dark:border-gray-700 rounded-lg shadow-lg cursor-pointer max-w-full h-auto"
         style={{ 
-          aspectRatio: '2400/1680',
+          aspectRatio: '1600/1120',
           width: '100%',
-          maxWidth: '2400px'
+          maxWidth: '1600px'
         }}
         onClick={handleCanvasClick}
       />
