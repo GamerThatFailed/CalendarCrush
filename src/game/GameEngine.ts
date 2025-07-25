@@ -92,7 +92,10 @@ export class GameEngine {
         x: this.CANVAS_WIDTH / 2, 
         y: this.CANVAS_HEIGHT - 60 
       },
-      velocity: { x: 4, y: -this.currentLevel.ballSpeed },
+      velocity: { 
+        x: this.currentLevel.ballSpeed * Math.cos(Math.PI / 4),
+        y: -this.currentLevel.ballSpeed * Math.sin(Math.PI / 4)
+      },
       radius: 8,
       trail: []
     };
@@ -467,7 +470,10 @@ export class GameEngine {
         x: this.CANVAS_WIDTH / 2, 
         y: this.CANVAS_HEIGHT - 60 
       };
-      this.ball.velocity = { x: 4, y: -this.currentLevel.ballSpeed };
+      this.ball.velocity = { 
+        x: this.currentLevel.ballSpeed * Math.cos(Math.PI / 4),
+        y: -this.currentLevel.ballSpeed * Math.sin(Math.PI / 4)
+      };
       this.audio.playSound('life-lost');
     }
   }
