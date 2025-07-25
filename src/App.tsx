@@ -47,10 +47,10 @@ function App() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <main className="py-8">
+        <div className="px-4 sm:px-6 lg:px-8">
           {/* Game Canvas - Takes up 2 columns on large screens */}
-          <div className="lg:col-span-2">
+          <div className="mb-8">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
@@ -70,7 +70,7 @@ function App() {
           </div>
 
           {/* Sidebar with game info and stats */}
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <GameInfo />
             <GameStats {...gameStats} />
             
@@ -95,6 +95,7 @@ function App() {
                 <div className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg opacity-50">
                   <span className="text-sm text-gray-600 dark:text-gray-400">Schedule Master</span>
                   <span className="text-xs text-gray-500 dark:text-gray-500">Complete all weeks</span>
+                </div>
                 </div>
               </div>
             </div>
