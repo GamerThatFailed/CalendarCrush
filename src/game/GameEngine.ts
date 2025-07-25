@@ -239,14 +239,21 @@ export class GameEngine {
     this.ball.position.x += this.ball.velocity.x;
     this.ball.position.y += this.ball.velocity.y;
 
-    // Constrain ball velocity to prevent excessive speed
-    this.physics.constrainBallVelocity(this.ball, this.currentLevel.ballSpeed * 1.5);
+    // Log ball speed before constraint
+    const speedBeforeConstraint = Math.sqrt(this.ball.velocity.x ** 2 + this.ball.velocity.y ** 2);
+    const maxSpeed = this.currentLevel.ballSpeed * 1.5;
 
-    // Log current ball speed for debugging (every 60 frames to avoid spam)
+    // Constrain ball velocity to prevent excessive speed
+    this.physics.constrainBallVelocity(this.ball, maxSpeed);
+
+    // Log ball speed after constraint
+    const speedAfterConstraint = Math.sqrt(this.ball.velocity.x ** 2 + this.ball.velocity.y ** 2);
+    
+    // Log every 60 frames to avoid spam, but include constraint details
     if (Math.floor(this.lastTime / 1000) % 1 === 0 && Math.floor(this.lastTime) % 60 === 0) {
-      const currentSpeed = Math.sqrt(this.ball.velocity.x ** 2 + this.ball.velocity.y ** 2);
-      console.log(`Ball speed during gameplay: ${currentSpeed.toFixed(2)} (max allowed: ${(this.currentLevel.ballSpeed * 1.5).toFixed(2)})`);
+      console.log(`Ball speed - Before constraint: ${speedBeforeConstraint.toFixed(2)}, After constraint: ${speedAfterConstraint.toFixed(2)}, Max allowed: ${maxSpeed.toFixed(2)}`);
     }
+
 
     // Wall collisions
     if (this.ball.position.x <= this.ball.radius || this.ball.position.x >= this.CANVAS_WIDTH - this.ball.radius) {
@@ -474,6 +481,11 @@ export class GameEngine {
         x: this.currentLevel.ballSpeed * Math.cos(Math.PI / 4),
         y: -this.currentLevel.ballSpeed * Math.sin(Math.PI / 4)
       };
+      
+      // Log ball speed after life lost reset
+      const resetSpeed = Math.sqrt(this.ball.velocity.x ** 2 + this.ball.velocity.y ** 2);
+      console.log(`Ball reset after life lost - Level ${this.currentLevel.id} speed: ${this.currentLevel.ballSpeed}, Actual velocity magnitude: ${resetSpeed.toFixed(2)}`);
+      
       this.audio.playSound('life-lost');
     }
   }
