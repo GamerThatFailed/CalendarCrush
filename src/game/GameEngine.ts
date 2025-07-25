@@ -187,6 +187,7 @@ export class GameEngine {
   }
 
   public start(): void {
+    this.stop();
     this.gameLoop(0);
   }
 
