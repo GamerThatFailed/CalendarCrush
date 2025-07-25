@@ -36,18 +36,20 @@ export class GameEngine {
   private keys: { [key: string]: boolean } = {};
   private lastTime = 0;
   private animationFrame: number | null = null;
+  private isDarkMode: boolean;
   
   private readonly PADDLE_SPEED = 8;
   private readonly BALL_SPEED_BASE = 6;
-  private readonly CANVAS_WIDTH = 1000;
-  private readonly CANVAS_HEIGHT = 700;
+  private readonly CANVAS_WIDTH = 1600;
+  private readonly CANVAS_HEIGHT = 1120;
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, isDarkMode: boolean = true) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d')!;
+    this.isDarkMode = isDarkMode;
     this.physics = new Physics();
     this.particles = new ParticleSystem();
-    this.levelManager = new LevelManager();
+    this.levelManager = new LevelManager(this.CANVAS_WIDTH);
     this.audio = new AudioManager();
     
     this.setupCanvas();
@@ -465,7 +467,7 @@ export class GameEngine {
 
   private render(): void {
     // Clear canvas
-    this.ctx.fillStyle = '#f8fafc';
+    this.ctx.fillStyle = this.isDarkMode ? '#0f172a' : '#f8fafc';
     this.ctx.fillRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
     
     // Render calendar grid
@@ -488,11 +490,11 @@ export class GameEngine {
     const dates = ['11', '12', '13', '14', '15', '16', '17'];
     
     // Header background
-    this.ctx.fillStyle = '#ffffff';
+    this.ctx.fillStyle = this.isDarkMode ? '#1e293b' : '#ffffff';
     this.ctx.fillRect(0, 0, this.CANVAS_WIDTH, 80);
     
     // Header border
-    this.ctx.strokeStyle = '#e2e8f0';
+    this.ctx.strokeStyle = this.isDarkMode ? '#334155' : '#e2e8f0';
     this.ctx.lineWidth = 1;
     this.ctx.beginPath();
     this.ctx.moveTo(0, 80);
@@ -505,19 +507,19 @@ export class GameEngine {
       const x = index * dayWidth;
       
       // Day name
-      this.ctx.fillStyle = '#64748b';
+      this.ctx.fillStyle = this.isDarkMode ? '#94a3b8' : '#64748b';
       this.ctx.font = 'bold 14px -apple-system, BlinkMacSystemFont, sans-serif';
       this.ctx.textAlign = 'center';
       this.ctx.fillText(day, x + dayWidth / 2, 25);
       
       // Date
-      this.ctx.fillStyle = '#1e293b';
+      this.ctx.fillStyle = this.isDarkMode ? '#f1f5f9' : '#1e293b';
       this.ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, sans-serif';
       this.ctx.fillText(dates[index], x + dayWidth / 2, 55);
       
       // Vertical separators
       if (index > 0) {
-        this.ctx.strokeStyle = '#e2e8f0';
+        this.ctx.strokeStyle = this.isDarkMode ? '#334155' : '#e2e8f0';
         this.ctx.beginPath();
         this.ctx.moveTo(x, 0);
         this.ctx.lineTo(x, 80);
@@ -526,7 +528,7 @@ export class GameEngine {
     });
     
     // Draw time grid lines
-    this.ctx.strokeStyle = '#f1f5f9';
+    this.ctx.strokeStyle = this.isDarkMode ? '#1e293b' : '#f1f5f9';
     this.ctx.lineWidth = 0.5;
     
     for (let i = 1; i < 7; i++) {
@@ -698,14 +700,14 @@ export class GameEngine {
 
   private renderUI(): void {
     // Score panel
-    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+    this.ctx.fillStyle = this.isDarkMode ? 'rgba(30, 41, 59, 0.95)' : 'rgba(255, 255, 255, 0.95)';
     this.ctx.fillRect(10, 10, 300, 60);
     
-    this.ctx.strokeStyle = '#e2e8f0';
+    this.ctx.strokeStyle = this.isDarkMode ? '#334155' : '#e2e8f0';
     this.ctx.lineWidth = 1;
     this.ctx.strokeRect(10, 10, 300, 60);
     
-    this.ctx.fillStyle = '#1e293b';
+    this.ctx.fillStyle = this.isDarkMode ? '#f1f5f9' : '#1e293b';
     this.ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, sans-serif';
     this.ctx.textAlign = 'left';
     this.ctx.fillText(`Score: ${this.gameStats.score}`, 20, 30);
@@ -729,7 +731,7 @@ export class GameEngine {
   }
 
   private renderMenuScreen(): void {
-    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    this.ctx.fillStyle = this.isDarkMode ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.8)';
     this.ctx.fillRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
     
     this.ctx.fillStyle = '#ffffff';
@@ -746,7 +748,7 @@ export class GameEngine {
   }
 
   private renderPausedScreen(): void {
-    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+    this.ctx.fillStyle = this.isDarkMode ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.6)';
     this.ctx.fillRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
     
     this.ctx.fillStyle = '#ffffff';
@@ -759,7 +761,7 @@ export class GameEngine {
   }
 
   private renderGameOverScreen(): void {
-    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    this.ctx.fillStyle = this.isDarkMode ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.8)';
     this.ctx.fillRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
     
     this.ctx.fillStyle = '#ef4444';

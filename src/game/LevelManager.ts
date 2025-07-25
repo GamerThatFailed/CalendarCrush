@@ -2,8 +2,10 @@ import { Level, MeetingBlock, MeetingType } from '../types/GameTypes';
 
 export class LevelManager {
   private levels: Level[] = [];
+  private canvasWidth: number;
 
-  constructor() {
+  constructor(canvasWidth: number) {
+    this.canvasWidth = canvasWidth;
     this.generateLevels();
   }
 
@@ -41,7 +43,7 @@ export class LevelManager {
 
   private createMeetingLayout1(): MeetingBlock[] {
     const meetings: MeetingBlock[] = [];
-    const dayWidth = 1000 / 7;
+    const dayWidth = this.canvasWidth / 7;
     const colors = ['#3b82f6', '#f59e0b', '#10b981', '#8b5cf6', '#ef4444'];
     const meetingTitles = [
       'standup', 'sync', '1:1 / alice', 'review', 'planning',
@@ -78,7 +80,7 @@ export class LevelManager {
 
   private createMeetingLayout2(): MeetingBlock[] {
     const meetings: MeetingBlock[] = [];
-    const dayWidth = 1000 / 7;
+    const dayWidth = this.canvasWidth / 7;
     const colors = ['#3b82f6', '#f59e0b', '#10b981', '#8b5cf6', '#ef4444'];
     const meetingTitles = [
       'standup', 'stakeholder', '1:1 / bob', 'promote', 'discuss',
@@ -118,7 +120,7 @@ export class LevelManager {
 
   private createMeetingLayout3(): MeetingBlock[] {
     const meetings: MeetingBlock[] = [];
-    const dayWidth = 1000 / 7;
+    const dayWidth = this.canvasWidth / 7;
     const colors = ['#3b82f6', '#f59e0b', '#10b981', '#8b5cf6', '#ef4444', '#06b6d4'];
     const meetingTitles = [
       'board meeting', 'investor call', 'quarterly review', 'team offsite',

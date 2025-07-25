@@ -26,57 +26,57 @@ export const GameStats: React.FC<GameStatsProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 max-w-md">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 max-w-md">
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center">
         <BarChart3 className="mr-2 text-blue-600" />
         Game Stats
       </h2>
       
       <div className="grid grid-cols-2 gap-4">
-        <div className="text-center p-3 bg-blue-50 rounded-lg">
+        <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
           <div className="text-2xl font-bold text-blue-600">{score.toLocaleString()}</div>
-          <div className="text-sm text-blue-800">Score</div>
+          <div className="text-sm text-blue-800 dark:text-blue-300">Score</div>
         </div>
         
-        <div className="text-center p-3 bg-green-50 rounded-lg">
+        <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
           <div className="text-2xl font-bold text-green-600">{level}</div>
-          <div className="text-sm text-green-800">Week</div>
+          <div className="text-sm text-green-800 dark:text-green-300">Week</div>
         </div>
         
-        <div className="text-center p-3 bg-red-50 rounded-lg">
+        <div className="text-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
           <div className="text-2xl font-bold text-red-600">{lives}</div>
-          <div className="text-sm text-red-800">Lives</div>
+          <div className="text-sm text-red-800 dark:text-red-300">Lives</div>
         </div>
         
-        <div className="text-center p-3 bg-purple-50 rounded-lg">
+        <div className="text-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
           <div className="text-2xl font-bold text-purple-600">{meetingsCancelled}</div>
-          <div className="text-sm text-purple-800">Cancelled</div>
+          <div className="text-sm text-purple-800 dark:text-purple-300">Cancelled</div>
         </div>
       </div>
       
       <div className="mt-4 space-y-3">
         <div className="flex items-center justify-between text-sm">
-          <span className="flex items-center text-gray-600">
+          <span className="flex items-center text-gray-600 dark:text-gray-400">
             <Zap className="mr-1" size={16} />
             Power-ups Collected
           </span>
-          <span className="font-semibold text-gray-800">{powerUpsCollected}</span>
+          <span className="font-semibold text-gray-800 dark:text-gray-200">{powerUpsCollected}</span>
         </div>
         
         <div className="flex items-center justify-between text-sm">
-          <span className="flex items-center text-gray-600">
+          <span className="flex items-center text-gray-600 dark:text-gray-400">
             <Clock className="mr-1" size={16} />
             Time Played
           </span>
-          <span className="font-semibold text-gray-800">{formatTime(timeElapsed)}</span>
+          <span className="font-semibold text-gray-800 dark:text-gray-200">{formatTime(timeElapsed)}</span>
         </div>
         
         <div className="flex items-center justify-between text-sm">
-          <span className="flex items-center text-gray-600">
+          <span className="flex items-center text-gray-600 dark:text-gray-400">
             <Target className="mr-1" size={16} />
             Efficiency
           </span>
-          <span className="font-semibold text-gray-800">
+          <span className="font-semibold text-gray-800 dark:text-gray-200">
             {timeElapsed > 0 ? Math.round((meetingsCancelled / (timeElapsed / 1000)) * 60) : 0}/min
           </span>
         </div>
