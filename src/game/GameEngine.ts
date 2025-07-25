@@ -175,6 +175,7 @@ export class GameEngine {
   }
 
   public start(): void {
+    this.stop(); // Cancel any existing game loop before starting a new one
     this.gameLoop(0);
   }
 
