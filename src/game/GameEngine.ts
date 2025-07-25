@@ -97,6 +97,10 @@ export class GameEngine {
       trail: []
     };
 
+    // Log initial ball speed for debugging
+    const initialSpeed = Math.sqrt(this.ball.velocity.x ** 2 + this.ball.velocity.y ** 2);
+    console.log(`Ball reset - Level ${this.currentLevel.id} speed: ${this.currentLevel.ballSpeed}, Actual velocity magnitude: ${initialSpeed.toFixed(2)}`);
+
     // Load meeting blocks from current level
     this.meetingBlocks = [...this.currentLevel.meetings];
     this.powerUps = [];
@@ -234,6 +238,12 @@ export class GameEngine {
 
     // Constrain ball velocity to prevent excessive speed
     this.physics.constrainBallVelocity(this.ball, this.currentLevel.ballSpeed * 1.5);
+
+    // Log current ball speed for debugging (every 60 frames to avoid spam)
+    if (Math.floor(this.lastTime / 1000) % 1 === 0 && Math.floor(this.lastTime) % 60 === 0) {
+      const currentSpeed = Math.sqrt(this.ball.velocity.x ** 2 + this.ball.velocity.y ** 2);
+      console.log(`Ball speed during gameplay: ${currentSpeed.toFixed(2)} (max allowed: ${(this.currentLevel.ballSpeed * 1.5).toFixed(2)})`);
+    }
 
     // Wall collisions
     if (this.ball.position.x <= this.ball.radius || this.ball.position.x >= this.CANVAS_WIDTH - this.ball.radius) {
